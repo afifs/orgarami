@@ -1,0 +1,325 @@
+{
+  "app": {
+    "title": "Orgarami"
+  },
+  "toolbar": {
+    "openFile": "Open CSV file… (Ctrl+O)",
+    "loadUrl": "Load from URL… (Ctrl+U)",
+    "reload": "Reload current source",
+    "undo": "Undo (Ctrl+Z)",
+    "redo": "Redo (Ctrl+Y)",
+    "fitScreen": "Fit to screen",
+    "fullscreen": "Fullscreen",
+    "compactLayout": "Toggle compact layout",
+    "expandAll": "Expand all nodes",
+    "collapseManagers": "Collapse to managers only",
+    "exportSvg": "Export SVG",
+    "print": "Print chart (Ctrl+P)",
+    "savePng": "Save chart as PNG",
+    "tiledExport": "Tiled export / multi-page PDF",
+    "manageOrgs": "Manage orgs (add / rename / delete)",
+    "editor": "Toggle data editor",
+    "settings": "Visual settings (Ctrl+,)",
+    "moveMode": "Toggle move mode (click to select → click parent to move)",
+    "searchPlaceholder": "Search nodes…",
+    "noFileLoaded": "No file loaded",
+    "geditMode": "Toggle graphical edit mode"
+  },
+  "menu": {
+    "file": "File",
+    "openFile": "Open CSV file…",
+    "loadUrl": "Load from URL…",
+    "print": "Print…",
+    "settings": "Settings…",
+    "quit": "Quit",
+    "view": "View",
+    "reload": "Reload",
+    "devTools": "Toggle Developer Tools",
+    "fullscreen": "Toggle Fullscreen",
+    "help": "Help",
+    "about": "About Orgarami"
+  },
+  "editor": {
+    "title": "Data Editor",
+    "addNode": "Add node",
+    "unsavedChanges": "● Unsaved changes",
+    "saveCsv": "Save CSV",
+    "overwriteOriginal": "Overwrite original",
+    "colId": "ID",
+    "colPosition": "Position",
+    "colPerson": "Person",
+    "colParent": "Parent",
+    "colManager": "Mgr",
+    "colActions": "Actions",
+    "editNode": "Edit",
+    "deleteNode": "Delete"
+  },
+  "nodeModal": {
+    "editTitle": "Edit Node",
+    "addTitle": "Add Node",
+    "positionLabel": "Position / Role",
+    "personLabel": "Person name(s)",
+    "personPlaceholder": "Use ; to separate multiple",
+    "parentLabel": "Parent node",
+    "colorLabel": "Color",
+    "managerLabel": "Manager",
+    "idLabel": "ID",
+    "idAuto": "(auto)",
+    "noManagersAvailable": "— no managers available —",
+    "errorPositionRequired": "Position / Role is required.",
+    "errorParentRequired": "Please select a parent node.",
+    "errorCannotDetermineId": "Cannot determine next ID for this org",
+    "cancel": "Cancel",
+    "save": "Save",
+    "colors": {
+      "orange": "Orange",
+      "cyan": "Cyan",
+      "green": "Green",
+      "blue": "Blue",
+      "steelblue": "Steel Blue",
+      "coral": "Coral",
+      "mediumpurple": "Purple",
+      "red": "Red",
+      "emerald": "Emerald",
+      "violet": "Violet",
+      "gray": "Gray",
+      "custom": "Custom…"
+    }
+  },
+  "deleteModal": {
+    "title": "Delete node",
+    "childrenWarning": "{count} child(ren) will be reassigned to {parent}.",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "orgModal": {
+    "title": "Manage Orgs",
+    "currentOrgs": "Current orgs",
+    "noOrgs": "No orgs loaded",
+    "colName": "Org name",
+    "colRootId": "Root ID",
+    "colNodes": "Nodes",
+    "colColor": "Color",
+    "colActions": "Actions",
+    "nodeCount": "{count} node",
+    "nodeCountPlural": "{count} nodes",
+    "addTitle": "Add new org",
+    "orgNameLabel": "Org name",
+    "rootLabelLabel": "Root label",
+    "colorLabel": "Color",
+    "addButton": "Add",
+    "errorNameRequired": "Org name is required.",
+    "errorLabelRequired": "Root label is required.",
+    "errorDuplicateName": "An org named \"{name}\" already exists.",
+    "close": "Close",
+    "renameTitle": "Rename org",
+    "renamePrompt": "New name for \"{name}\"",
+    "errorNameEmpty": "Name cannot be empty.",
+    "errorAlreadyExists": "\"{name}\" already exists.",
+    "renameConfirm": "Rename",
+    "deleteTitle": "Delete org",
+    "deleteMessage": "Delete org \"{name}\" and all its {count} node(s)?",
+    "deleteWarning": "This cannot be undone with undo — save your CSV first if unsure.",
+    "deleteConfirm": "Delete all",
+    "toastCreated": "Org \"{name}\" created (root ID {id})",
+    "toastRenamed": "Renamed \"{old}\" → \"{new}\"",
+    "toastDeleted": "Org \"{name}\" deleted"
+  },
+  "settingsModal": {
+    "title": "Visual Settings",
+    "preview": "Preview",
+    "samplePosition": "Sample Position",
+    "samplePerson": "Sample Person",
+    "dimensionsSection": "Node dimensions",
+    "nodeWidth": "Node width",
+    "nodeHeight": "Node height",
+    "rootNodeHeight": "Root/header node height",
+    "colorBarHeight": "Color bar height",
+    "spacingSection": "Spacing",
+    "childrenMargin": "Children margin",
+    "compactMarginBetween": "Compact margin between",
+    "compactMarginPair": "Compact margin pair",
+    "colorsSection": "Colors",
+    "cardBackground": "Card background",
+    "borderColor": "Border color",
+    "nameTagBackground": "Name tag background",
+    "nameTagBorder": "Name tag border",
+    "typographySection": "Typography",
+    "borderRadius": "Border radius",
+    "positionFontSize": "Position font size",
+    "positionFontWeight": "Position font weight",
+    "fontWeightNormal": "Normal",
+    "fontWeightSemibold": "Semi-bold",
+    "fontWeightBold": "Bold",
+    "nameFontSize": "Name font size",
+    "displaySection": "Display",
+    "showPersonNames": "Show person names",
+    "languageSection": "Language",
+    "languageLabel": "Interface language",
+    "resetDefaults": "Reset to defaults",
+    "cancel": "Cancel",
+    "applyAndSave": "Apply & Save"
+  },
+  "urlModal": {
+    "title": "Load CSV from URL",
+    "placeholder": "https://example.com/data.csv",
+    "errorEmpty": "Please enter a URL.",
+    "errorInvalid": "Must start with http:// or https://",
+    "cancel": "Cancel",
+    "load": "Load"
+  },
+  "validationModal": {
+    "title": "CSV Validation Report",
+    "continueAnyway": "Continue anyway",
+    "noIssues": "No issues found.",
+    "categories": {
+      "duplicateId": "Duplicate ID",
+      "missingField": "Missing field",
+      "orphanNode": "Orphan node",
+      "idOutOfRange": "ID out of range",
+      "multipleRoots": "Multiple roots",
+      "noRootNode": "No root node"
+    },
+    "messages": {
+      "duplicateId": "ID {id} appears more than once",
+      "missingPositionName": "Row with ID {id} has no positionName",
+      "missingOrg": "Row with ID {id} has no org",
+      "orphanNode": "\"{name}\" (ID {id}) references missing parent ID {parentId}",
+      "idOutOfRange": "\"{name}\" (ID {id}) is outside its org block {min}–{max}",
+      "multipleRoots": "Org \"{org}\" has {count} root nodes (id % 1000 === 0)",
+      "noRootNode": "Org \"{org}\" has no root node (id % 1000 === 0)"
+    }
+  },
+  "tiledModal": {
+    "title": "Tiled Export",
+    "paperSize": "Paper size",
+    "orientation": "Orientation",
+    "landscape": "Landscape",
+    "portrait": "Portrait",
+    "scale": "Scale",
+    "overlap": "Overlap",
+    "overlapUnit": "mm",
+    "overlapHelp": "Shared margin for assembly alignment",
+    "scaleHelp": "Lower = smaller nodes, more fits per page",
+    "outputFormat": "Output format",
+    "formatPdf": "PDF (all pages in one file)",
+    "formatPng": "PNG tiles (one file each)",
+    "pageLabels": "Page labels",
+    "labelsShow": "Show (row/col + page number)",
+    "labelsHide": "Hide",
+    "estimatedLayout": "Estimated layout",
+    "noChartLoaded": "No chart loaded",
+    "renderFirst": "Render a chart first",
+    "pages": "{count} page",
+    "pagesPlural": "{count} pages",
+	"page": "Page",
+	"chart": "Chart",
+	"overlap":"Overlap",
+    "tooManyTiles": "⚠ Too many tiles — reduce scale or increase paper size",
+    "cancel": "Cancel",
+    "generate": " Generate",
+    "papers": {
+      "a4": "A4  (210 × 297 mm)",
+      "a3": "A3  (297 × 420 mm)",
+      "letter": "Letter (216 × 279 mm)"
+    }
+  },
+  "dragModal": {
+    "title": "Confirm re-parent",
+    "cancel": "Cancel",
+    "confirm": "Move node"
+  },
+  "toast": {
+    "fetching": "Fetching…",
+    "capturing": "Capturing chart…",
+    "fileReloaded": "File reloaded",
+    "saved": "Saved: {filename}",
+    "overwritten": "Overwritten: {filename}",
+    "overwriteFailed": "Cannot overwrite: {error} — opening Save As…",
+    "saveError": "Save error: {error}",
+    "nodeDeleted": "Node deleted",
+    "nodeMoved": "Node moved",
+    "undone": "Undone",
+    "redone": "Redone",
+    "configSaved": "Visual settings saved",
+    "configReset": "Reset to defaults",
+    "printOpened": "Print dialog opened",
+    "pngSaved": "PNG saved",
+    "pdfSaved": "PDF saved — {count} page(s)",
+    "tilesSaved": "{count} PNG tile(s) saved",
+    "buildingTiles": "Building {count} tile(s)…",
+    "moveModeOn": "Move mode ON — click a node to select it, then click its new parent",
+    "moveModeOff": "Move mode OFF",
+    "moveSelected": "Selected: \"{name}\" — now click the new parent",
+    "moveCancelled": "Selection cancelled",
+    "cannotMoveRoot": "Cannot move a root node",
+    "cannotMoveToDescendant": "Cannot move a node onto its own descendant",
+    "noChartToPrint": "No chart to print",
+    "captureFailed": "Capture failed: {error}",
+    "printError": "Print error: {error}",
+    "noChartLoaded": "No chart loaded",
+    "selectOrgFirst": "Select an org first",
+    "orgValidationWarning": "{count} node(s) have missing parents",
+    "loaded": "Loaded {rows} rows — {orgs} org(s)",
+    "errorPrefix": "Error: {error}"
+  },
+  "orgSelect": {
+    "placeholder": "— select org —"
+  },
+  "about": {
+    "title": "About Orgarami",
+    "version": "Version 1.0.0",
+    "description": "A lightweight desktop application for viewing and editing organisational charts from CSV data. Load files locally or from remote URLs, edit nodes in place, and export to SVG or print directly.",
+    "featuresSection": "Features",
+    "techSection": "Built with",
+    "features": {
+      "localRemote": {
+        "title": "Local & Remote CSV",
+        "desc": "Open files or fetch from any HTTP/HTTPS URL"
+      },
+      "editor": {
+        "title": "In-app editor",
+        "desc": "Add, edit, and delete nodes with live chart update"
+      },
+      "reparent": {
+        "title": "Smart re-parenting",
+        "desc": "Deleted node's children auto-connect to its parent"
+      },
+      "saveCsv": {
+        "title": "Save as CSV",
+        "desc": "UTF-8 BOM output — opens correctly in Excel"
+      },
+      "print": {
+        "title": "Print & Tiled export",
+        "desc": "System print dialog and multi-page PDF tiling"
+      },
+      "export": {
+        "title": "SVG / PNG export",
+        "desc": "Vector and raster export for documents"
+      },
+      "multiOrg": {
+        "title": "Multi-org support",
+        "desc": "Multiple organisations in a single CSV file"
+      },
+      "session": {
+        "title": "Session restore",
+        "desc": "Remembers the last opened file across sessions"
+      },
+      "undoRedo": {
+        "title": "Undo / Redo",
+        "desc": "Full edit history with Ctrl+Z / Ctrl+Y"
+      },
+      "i18n": {
+        "title": "Multilingual",
+        "desc": "English and Turkish interface"
+      }
+    },
+    "copyright": "© 2026 Afif Say"
+  },
+  "gedit": {
+    "modeOn": "Graphical edit ON — click fields to edit, + to add child, × to delete",
+    "modeOff": "Graphical edit OFF",
+    "addChildNode": "Add child node",
+	"deleteNode": "Delete node"
+  }
+}

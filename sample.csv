@@ -1,0 +1,70 @@
+﻿org,id,person,positionName,parentId,Mgr,color
+Executive,1000,,Meridian Group,,1,#2c3e50
+Executive,1001,Jonathan Hargrove,Chief Executive Officer,1000,1,#2c3e50
+Executive,1002,Sandra Oyelaran,Chief Financial Officer,1001,1,#2c3e50
+Executive,1003,Michael Tran,Chief Operating Officer,1001,1,#2c3e50
+Executive,1004,Leila Nazari,Chief People Officer,1001,1,#2c3e50
+Executive,1005,David Ashworth,Chief Technology Officer,1001,1,#2c3e50
+Executive,1006,Camille Fontaine,General Counsel,1001,0,#2c3e50
+Executive,1007,Ricardo Salinas,Chief Marketing Officer,1001,1,#2c3e50
+Finance,2000,,Finance & Accounting,,1,#1a5276
+Finance,2001,Sandra Oyelaran,CFO,2000,1,#1a5276
+Finance,2002,Patrick Mensah,Finance Manager,2001,1,#1a5276
+Finance,2003,Yuki Tanaka,Accounting Manager,2001,1,#1a5276
+Finance,2004,Elif Güneş,Treasury Manager,2001,1,#1a5276
+Finance,2005,Reza Ahmadi;Priya Mehta;Tom Okello,Financial Analysts,2002,0,#1a5276
+Finance,2006,Nadia Volkov;Sung-Min Park,Budget Analysts,2002,0,#1a5276
+Finance,2007,Beatriz Sousa;Kwame Asante;Ivan Petrov;Mei-Ling Wu,Accountants,2003,0,#1a5276
+Finance,2008,Fatima Al-Rashid;Carlos Herrera,Accounts Payable,2003,0,#1a5276
+Finance,2009,Amara Diallo;Sven Lindström,Accounts Receivable,2003,0,#1a5276
+Finance,2010,Youssef Benali;Hana Kovář,Treasury Analysts,2004,0,#1a5276
+Finance,2011,TBH,Internal Auditor,2001,0,#1a5276
+Technology,3000,,Technology & IT,,1,#1e8449
+Technology,3001,David Ashworth,CTO,3000,1,#1e8449
+Technology,3002,Ingrid Holm,VP Engineering,3001,1,#1e8449
+Technology,3003,Omar Farooq,VP Infrastructure,3001,1,#1e8449
+Technology,3004,Zara Okonkwo,Head of Product,3001,1,#1e8449
+Technology,3005,Felix Wagner,Engineering Manager — Backend,3002,1,#1e8449
+Technology,3006,Sunita Rao,Engineering Manager — Frontend,3002,1,#1e8449
+Technology,3007,Andrei Popescu;Chiara Romano;Jae-Won Kim;Luca Bianchi;Anika Sharma,Backend Engineers,3005,0,#1e8449
+Technology,3008,Tomás García;Nour El-Amin;Björn Eriksson;Dina Mostafa,Frontend Engineers,3006,0,#1e8449
+Technology,3009,Yemi Adebayo;Olga Kravchenko;Patrick Leblanc,QA Engineers,3002,0,#1e8449
+Technology,3010,Hamid Sultani;Clémentine Dubois;Raj Patel;Wanjiku Kamau,DevOps Engineers,3003,0,#1e8449
+Technology,3011,Aleksei Morozov;Thanh Nguyen,Network Administrators,3003,0,#1e8449
+Technology,3012,Fatou Diop;Marco Esposito,IT Support Specialists,3003,0,#1e8449
+Technology,3013,Miriam Goldstein;Kwabena Boateng,Product Managers,3004,0,#1e8449
+Technology,3014,Seo-Yeon Park;Aditi Nair;Tobias Müller,UX Designers,3004,0,#1e8449
+Operations,4000,,Operations,,1,#7d6608
+Operations,4001,Michael Tran,COO,4000,1,#7d6608
+Operations,4002,Grace Nakamura,Supply Chain Manager,4001,1,#7d6608
+Operations,4003,Bruno Ferreira,Logistics Manager,4001,1,#7d6608
+Operations,4004,Ifeoma Obi,Quality Manager,4001,1,#7d6608
+Operations,4005,Sana Malik;Dimitri Papadopoulos;Lucía Vega,Procurement Officers,4002,0,#7d6608
+Operations,4006,Jin-Ho Baek;Amina Traoré;Sergei Volkov,Inventory Controllers,4002,0,#7d6608
+Operations,4007,Emmanuel Osei;Valentina Cruz;Haruto Yamamoto;Nadia Benali,Logistics Coordinators,4003,0,#7d6608
+Operations,4008,Abdul Rahman;Estela Moreno;Yusuf Olatunji,Fleet Supervisors,4003,0,#7d6608
+Operations,4009,Kenji Watanabe;Blessing Adeyemi;Teodora Ionescu;Marcelo Braga,QA Inspectors,4004,0,#7d6608
+Operations,4010,Salma Haddad;Pieter Van den Berg,Compliance Officers,4004,0,#7d6608
+People,5000,,People & Culture,,1,#6c3483
+People,5001,Leila Nazari,Chief People Officer,5000,1,#6c3483
+People,5002,Amara Mensah,HR Manager,5001,1,#6c3483
+People,5003,Tomoko Ishida,Learning & Development Manager,5001,1,#6c3483
+People,5004,Kweku Darko,Talent Acquisition Manager,5001,1,#6c3483
+People,5005,Zahra Hosseini;Liam O'Brien,HR Business Partners,5002,0,#6c3483
+People,5006,Nkechi Okafor;Rashida Mbeki;Tomas Novak,HR Generalists,5002,0,#6c3483
+People,5007,Yara El-Sayed;Finn Andersen,L&D Specialists,5003,0,#6c3483
+People,5008,Priscilla Santos;Mikhail Ivanov;Asha Wangari;Diego Ramírez,Recruiters,5004,0,#6c3483
+People,5009,Chloe Bergmann;Sipho Dlamini,Employer Branding,5004,0,#6c3483
+People,5010,TBH,Payroll Manager,5001,1,#6c3483
+People,5011,Irene Castillo;Nikolaos Papadakis,Payroll Specialists,5010,0,#6c3483
+Marketing,6000,,Marketing & Communications,,1,#922b21
+Marketing,6001,Ricardo Salinas,Chief Marketing Officer,6000,1,#922b21
+Marketing,6002,Nneka Obi,Brand Manager,6001,1,#922b21
+Marketing,6003,Lars Svensson,Digital Marketing Manager,6001,1,#922b21
+Marketing,6004,Aiko Yamamoto,Communications Manager,6001,1,#922b21
+Marketing,6005,Tunde Adeyemi;Sofía Ruiz;Piotr Wiśniewski,Brand Specialists,6002,0,#922b21
+Marketing,6006,Emre Yıldız;Ananya Krishnan;Ciarán Murphy;Wei Zhang,Digital Marketers,6003,0,#922b21
+Marketing,6007,Ingeborg Haug;Moussa Coulibaly,SEO & Analytics,6003,0,#922b21
+Marketing,6008,Adwoa Asante;Gabriel Silva;Oksana Petrenko,Content Creators,6004,0,#922b21
+Marketing,6009,Hiro Matsumoto;Siobhán Kelly,PR Specialists,6004,0,#922b21
+Marketing,6010,TBH,Events Coordinator,6001,0,#922b21

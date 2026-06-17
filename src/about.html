@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self';
+             style-src 'unsafe-inline';
+             script-src 'self' 'unsafe-inline';
+             img-src 'self' data:;">
+  <title>About Orgarami</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin:0; padding:0; font-family:system-ui,sans-serif; background:#f7f8fa; color:#333; height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; overflow:hidden; }
+    .hero { width:100%; background:linear-gradient(135deg,#2c3e50 0%,#3d5a80 100%); color:#fff; padding:32px 24px 24px; text-align:center; }
+    .app-icon { width:64px; height:64px; background:rgba(255,255,255,.15); border-radius:16px; display:inline-flex; align-items:center; justify-content:center; font-size:34px; margin-bottom:12px; }
+    .hero h1 { margin:0; font-size:22px; font-weight:700; letter-spacing:.3px; }
+    .version { display:inline-block; margin-top:6px; background:rgba(255,255,255,.2); border-radius:12px; padding:2px 12px; font-size:12px; letter-spacing:.5px; }
+    .content { width:100%; padding:20px 28px; flex:1; overflow-y:auto; }
+    .desc { font-size:13px; line-height:1.6; color:#555; margin-bottom:20px; }
+    .section-title { font-size:11px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:#999; margin-bottom:8px; }
+    .feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:20px; }
+    .feature-item { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px 12px; font-size:12px; display:flex; align-items:flex-start; gap:8px; }
+    .feature-item .icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+    .feature-item strong { display:block; font-size:12px; margin-bottom:1px; }
+    .feature-item span { color:#777; font-size:11px; line-height:1.4; }
+    .tech-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
+    .tech-badge { background:#e8f0fe; color:#1a56db; border-radius:6px; padding:3px 10px; font-size:11px; font-weight:600; }
+    .meta-row { font-size:12px; color:#888; display:flex; justify-content:space-between; border-top:1px solid #e5e7eb; padding-top:14px; }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="app-icon"><img src="../assets/orglogo.png" height="90"></img></div>
+  <h1 data-i18n="about.title">About OrgChart Viewer</h1>
+  <div class="version" data-i18n="about.version">Version 1.0.0</div>
+</div>
+
+<div class="content">
+  <p class="desc" data-i18n="about.description"></p>
+
+  <div class="section-title" data-i18n="about.featuresSection">Features</div>
+  <div class="feature-grid">
+    <div class="feature-item"><div><strong data-i18n="about.features.localRemote.title"></strong><span data-i18n="about.features.localRemote.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.editor.title"></strong><span data-i18n="about.features.editor.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.reparent.title"></strong><span data-i18n="about.features.reparent.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.saveCsv.title"></strong><span data-i18n="about.features.saveCsv.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.print.title"></strong><span data-i18n="about.features.print.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.export.title"></strong><span data-i18n="about.features.export.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.multiOrg.title"></strong><span data-i18n="about.features.multiOrg.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.session.title"></strong><span data-i18n="about.features.session.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.undoRedo.title"></strong><span data-i18n="about.features.undoRedo.desc"></span></div></div>
+    <div class="feature-item"><div><strong data-i18n="about.features.i18n.title"></strong><span data-i18n="about.features.i18n.desc"></span></div></div>
+  </div>
+
+  <div class="section-title" data-i18n="about.techSection">Built with</div>
+  <div class="tech-row">
+    <span class="tech-badge">Electron 29</span>
+    <span class="tech-badge">D3.js v7</span>
+    <span class="tech-badge">d3-org-chart v3</span>
+    <span class="tech-badge">Bootstrap 5</span>
+    <span class="tech-badge">html2canvas</span>
+    <span class="tech-badge">jsPDF</span>
+  </div>
+
+  <div class="meta-row">
+    <span data-i18n="about.copyright">© 2026 Afif Say</span>
+  </div>
+  <div style="padding: 10px">
+	<img id="cwlogo" src="logoen.png" height="60"></img>
+  </div>
+  <div class="meta-row">www.afifsay.org</div>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const lang   = params.get('lang') || 'en';
+  const cwlogo = document.getElementById('cwlogo');
+  function loadLocale(l, cb) {
+    cwlogo.src = 'logo' + l + '.png';
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'locales/' + l + '.json');
+    xhr.onload  = () => cb(JSON.parse(xhr.responseText));
+    xhr.onerror = () => { if (l !== 'en') loadLocale('en', cb); };
+    xhr.send();
+  }
+
+  function t(key) {
+    const parts = key.split('.');
+    let v = window._s || {};
+    for (const p of parts) { if (v == null) break; v = v[p]; }
+    return typeof v === 'string' ? v : '';
+  }
+
+  function apply() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = t(el.dataset.i18n);
+      if (v) el.textContent = v;
+    });
+    const title = t('about.title');
+    if (title) document.title = title;
+  }
+
+  loadLocale(lang, s => { window._s = s; apply(); });
+</script>
+</body>
+</html>

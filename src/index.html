@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self';
+             script-src 'self' https://d3js.org https://cdn.jsdelivr.net https://code.jquery.com 'unsafe-inline' 'unsafe-eval';
+             style-src  'self' https://cdn.jsdelivr.net 'unsafe-inline';
+             font-src   'self' https://cdn.jsdelivr.net;
+             img-src    'self' data:;
+             connect-src https: http:;">
+  <title>Orgarami</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin:0; padding:0; height:100%; width:100%; font-family:system-ui,sans-serif; overflow:hidden; }
+    body { display:flex; flex-direction:column; }
+
+    /* ── Toolbar ── */
+    #toolbar {
+      display:flex; align-items:center; gap:4px;
+      padding:4px 8px; background:#f0f0f0;
+      border-bottom:1px solid #ccc; height:40px; flex-shrink:0;
+    }
+    #toolbar .tb-btn {
+      background:none; border:1px solid transparent; border-radius:4px;
+      padding:3px 7px; cursor:pointer; font-size:18px; color:#444;
+      display:flex; align-items:center; transition:background 0.15s;
+    }
+    #toolbar .tb-btn:hover  { background:#ddd; border-color:#bbb; }
+    #toolbar .tb-btn:active { background:#ccc; }
+    #toolbar .tb-btn.active { background:#d0e8ff; border-color:#89b; color:#226; }
+    #toolbar .sep { width:1px; background:#ccc; height:22px; margin:0 2px; }
+    #source-label { font-size:12px; color:#666; max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+    #orgSelect { height:28px; font-size:13px; padding:0 6px; border:1px solid #bbb; border-radius:4px; min-width:160px; }
+
+    /* ── Main body ── */
+    #main-body { flex:1; display:flex; overflow:hidden; position:relative; }
+
+    /* ── Chart area ── */
+    #chart-wrap { flex:1; overflow:hidden; position:relative; }
+    .chart-container { width:100%; height:100%; }
+
+    /* ── Empty state ── */
+    #empty-state {
+      position:absolute; inset:0; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; color:#999; pointer-events:none;
+    }
+    #empty-state i { font-size:48px; margin-bottom:12px; }
+    #empty-state p { font-size:15px; margin:0; }
+    #empty-state.hidden { display:none; }
+
+    /* ── Editor panel ── */
+    #editor-panel {
+      width:0; overflow:hidden; border-left:1px solid #ccc;
+      background:#fafafa; display:flex; flex-direction:column;
+      transition:width 0.25s; flex-shrink:0;
+    }
+    #editor-panel.open { width:540px; }
+    #editor-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:8px 12px; background:#e8e8e8; border-bottom:1px solid #ccc; flex-shrink:0;
+    }
+    #editor-header h6 { margin:0; font-size:14px; font-weight:600; }
+    #editor-toolbar {
+      display:flex; gap:6px; align-items:center;
+      padding:6px 10px; border-bottom:1px solid #ddd; flex-shrink:0; background:#f5f5f5;
+    }
+    #editor-table-wrap { flex:1; overflow-y:auto; }
+    #editor-table { width:100%; border-collapse:collapse; font-size:12px; }
+    #editor-table th {
+      position:sticky; top:0; background:#e0e0e0;
+      padding:5px 8px; text-align:left; font-weight:600;
+      border-bottom:2px solid #bbb; white-space:nowrap; z-index:1;
+    }
+    #editor-table td { padding:4px 8px; border-bottom:1px solid #eee; vertical-align:middle; }
+    #editor-table tr:hover td { background:#f0f4ff; }
+    #editor-table .col-actions { width:64px; text-align:center; white-space:nowrap; }
+    #editor-table .col-id     { width:52px; color:#999; }
+    #editor-table .col-mgr    { width:36px; text-align:center; }
+    #editor-table .col-person { max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #editor-table .col-pos    { max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #editor-table .col-parent { max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#555; font-size:11px; }
+    .btn-row-edit   { background:none; border:none; cursor:pointer; color:#1a6; padding:2px 4px; font-size:14px; }
+    .btn-row-delete { background:none; border:none; cursor:pointer; color:#c33; padding:2px 4px; font-size:14px; }
+    .btn-row-edit:hover   { color:#0a4; }
+    .btn-row-delete:hover { color:#a00; }
+    #editor-footer {
+      padding:8px 10px; border-top:1px solid #ddd; background:#f0f0f0;
+      display:flex; gap:8px; flex-shrink:0; align-items:center;
+    }
+    #unsaved-badge {
+      font-size:11px; color:#a60; background:#fff3cd; border:1px solid #ffc107;
+      border-radius:4px; padding:2px 8px; display:none;
+    }
+
+    /* ── Settings modal specifics ── */
+    .cfg-section { font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:#999; margin:12px 0 6px; }
+    .cfg-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+    .cfg-row label { width:180px; font-size:13px; flex-shrink:0; }
+    .cfg-row input[type=range] { flex:1; }
+    .cfg-row .cfg-val { width:44px; text-align:right; font-size:12px; color:#555; font-variant-numeric:tabular-nums; }
+    .cfg-row input[type=color] { width:44px; height:28px; padding:2px; border:1px solid #ccc; border-radius:4px; cursor:pointer; }
+    .cfg-row input[type=number] { width:70px; }
+    .cfg-preview-box {
+      width:100%; height:88px; border:1px solid #ddd; border-radius:6px;
+      overflow:hidden; background:#f5f5f5; margin-bottom:8px;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* ── Toast ── */
+    #toast-wrap { position:fixed; bottom:16px; right:16px; z-index:9999; }
+    .toast-msg {
+      background:#333; color:#fff; padding:8px 16px;
+      border-radius:6px; font-size:13px; margin-top:6px;
+      opacity:0; transition:opacity 0.2s;
+    }
+    .toast-msg.show { opacity:1; }
+
+    /* ── Search highlight ── */
+    .node-match    { outline: 3px solid #f39c12 !important; outline-offset: 2px; border-radius: 5px; }
+    .node-dimmed   { opacity: 0.22 !important; }
+    #search-input:focus { border-color: #89b; outline: none; box-shadow: 0 0 0 2px #d0e8ff; }
+
+    /* ── Drag mode indicator ── */
+    body.drag-mode #chart-container { cursor: grab; }
+    body.drag-mode #btn-drag-toggle { background:#fff3cd; border-color:#ffc107; color:#856404; }
+    .drag-mode-banner {
+      display: none;
+      position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+      background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px;
+      padding: 3px 14px; font-size: 12px; color: #856404; z-index: 100;
+      white-space: nowrap;
+    }
+    body.drag-mode .drag-mode-banner { display: block; }
+
+
+    /* ── Graphical edit mode ── */
+    body.gedit-mode #chart-container { cursor: default; }
+    body.gedit-mode #btn-gedit { background:#e8f5e9; border-color:#4caf50; color:#2e7d32; }
+
+    .node-gedit-btn {
+      position: absolute;
+    #  width: 20px; height: 20px;
+    #  border-radius: 50%;
+      border: none;
+	 background:transparent;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+      z-index: 20;
+      opacity: 0;
+      transition: opacity 0.15s, transform 0.15s;
+      shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+    body.gedit-mode .node-gedit-btn { opacity: 1; }
+    .node-btn-add {
+      #background: #27ae60; 
+	  color: #27ae60;
+      bottom: -10px; right: -4px;
+    }
+    .node-btn-add:hover { 
+	   color: #1e8449; 
+	   transform: scale(1.15); }
+    .node-btn-del {
+	  #background: #e74c3c; 
+	  color: #e74c3c;
+      top: 8px; right: -4px;
+    }
+    .node-btn-del:hover { 
+	   color: #c0392b; 
+	   transform: scale(1.15); }
+
+    /* Inline edit inputs inside node cards */
+    .node-inline-input {
+      width: 100%;
+      border: none;
+      border-bottom: 2px solid #3498db;
+      outline: none;
+      background: #f0f8ff;
+      border-radius: 2px;
+      padding: 1px 3px;
+      font-family: inherit;
+    }
+    .node-inline-input:focus { background: #e8f4fd; }
+
+    /* Editable field hover hint */
+    body.gedit-mode .node-editable:hover {
+      background: rgba(52,152,219,0.08);
+      border-radius: 2px;
+      cursor: text;
+    }
+
+    .form-label { font-size:13px; margin-bottom:2px; }
+    .form-control, .form-select { font-size:13px; }
+  </style>
+</head>
+<body>
+
+<!-- ── Toolbar ── -->
+<div id="toolbar">
+  <button class="tb-btn" id="btn-open-file"    title="Open CSV file… (Ctrl+O)" data-i18n-title="toolbar.openFile"><i class="bi bi-folder2-open"></i></button>
+  <button class="tb-btn" id="btn-open-url"     title="Load from URL… (Ctrl+U)" data-i18n-title="toolbar.loadUrl"><i class="bi bi-cloud-download"></i></button>
+  <button class="tb-btn" id="btn-reload"       title="Reload current source" data-i18n-title="toolbar.reload" style="display:none"><i class="bi bi-arrow-repeat"></i></button>
+  <button class="tb-btn" id="btn-undo" title="Undo (Ctrl+Z)" data-i18n-title="toolbar.undo" disabled><i class="bi bi-arrow-counterclockwise"></i></button>
+  <button class="tb-btn" id="btn-redo" title="Redo (Ctrl+Y)" data-i18n-title="toolbar.redo" disabled><i class="bi bi-arrow-clockwise"></i></button>
+  <div class="sep"></div>
+  <button class="tb-btn" id="btn-fit"  title="Fit to screen" data-i18n-title="toolbar.fitScreen"><i class="bi bi-fullscreen-exit"></i></button>
+  <button class="tb-btn" id="btn-full" title="Fullscreen" data-i18n-title="toolbar.fullscreen"><i class="bi bi-fullscreen"></i></button>
+  <button class="tb-btn" id="btn-compact" title="Toggle compact layout" data-i18n-title="toolbar.compactLayout"><i class="bi bi-grip-horizontal"></i></button>
+  <button class="tb-btn" id="btn-expand-all"   title="Expand all nodes" data-i18n-title="toolbar.expandAll"><i class="bi bi-arrows-angle-expand"></i></button>
+  <button class="tb-btn" id="btn-collapse-mgr" title="Collapse to managers only" data-i18n-title="toolbar.collapseManagers"><i class="bi bi-arrows-angle-contract"></i></button>
+  <div class="sep"></div>
+  <button class="tb-btn" id="btn-export"       title="Export SVG" data-i18n-title="toolbar.exportSvg"><i class="bi bi-filetype-svg"></i></button>
+  <button class="tb-btn" id="btn-print"        title="Print chart (Ctrl+P)" data-i18n-title="toolbar.print"><i class="bi bi-printer"></i></button>
+  <button class="tb-btn" id="btn-save-png"     title="Save chart as PNG" data-i18n-title="toolbar.savePng"><i class="bi bi-file-image"></i></button>
+  <button class="tb-btn" id="btn-tiled-export" title="Tiled export / multi-page PDF" data-i18n-title="toolbar.tiledExport"><i class="bi bi-grid-3x3-gap"></i></button>
+  <div class="sep"></div>
+  <select id="orgSelect"><option value="" data-i18n="orgSelect.placeholder">— select org —</option></select>
+  <button class="tb-btn" id="btn-manage-orgs" title="Manage orgs (add / rename / delete)" data-i18n-title="toolbar.manageOrgs"><i class="bi bi-diagram-2"></i></button>
+  <div class="sep"></div>
+  <button class="tb-btn" id="btn-editor"       title="Toggle data editor" data-i18n-title="toolbar.editor"><i class="bi bi-table"></i></button>
+  <button class="tb-btn" id="btn-gedit"        title="Toggle graphical edit mode" data-i18n-title="toolbar.geditMode"><i class="bi bi-vector-pen"></i></button>
+  <button class="tb-btn" id="btn-settings"     title="Visual settings (Ctrl+,)" data-i18n-title="toolbar.settings"><i class="bi bi-sliders"></i></button>
+  <div class="sep"></div>
+  <button class="tb-btn" id="btn-drag-toggle" title="Toggle move mode (click to select → click parent to move)" data-i18n-title="toolbar.moveMode"><i class="bi bi-arrows-move"></i></button>
+  <div class="sep"></div>
+  <div style="position:relative;display:flex;align-items:center;">
+    <i class="bi bi-search" style="position:absolute;left:7px;color:#999;font-size:14px;pointer-events:none;"></i>
+    <input type="text" id="search-input" placeholder="Search nodes…"
+      style="height:28px;padding:0 28px 0 26px;font-size:12px;border:1px solid #bbb;border-radius:4px;width:160px;outline:none;">
+    <button id="search-clear" title="Clear search"
+      style="position:absolute;right:4px;background:none;border:none;cursor:pointer;color:#bbb;font-size:14px;display:none;line-height:1;">×</button>
+  </div>
+  <div class="sep"></div>
+  <span id="source-label">No file loaded</span>
+</div>
+
+<!-- ── Main body ── -->
+<div id="main-body">
+  <div id="chart-wrap">
+    <div class="drag-mode-banner"><i class="bi bi-arrows-move me-1"></i>Move mode — click a node to select it, then click the new parent to move it there</div>
+    <div class="chart-container" id="chart-container"></div>
+    <div id="empty-state">
+      <i class="bi bi-diagram-3"></i>
+      <p>Open a CSV file or load from URL to get started</p>
+    </div>
+  </div>
+
+  <!-- Editor panel -->
+  <div id="editor-panel">
+    <div id="editor-header">
+      <h6><i class="bi bi-table me-1"></i> <span data-i18n="editor.title">Data Editor</span></h6>
+      <button class="tb-btn" id="btn-editor-close" title="Close editor" style="font-size:16px;"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div id="editor-toolbar">
+      <button class="btn btn-sm btn-success" id="btn-add-node"><i class="bi bi-plus-lg me-1"></i><span data-i18n="editor.addNode">Add node</span></button>
+      <div style="flex:1"></div>
+      <span id="unsaved-badge">● Unsaved changes</span>
+    </div>
+    <div id="editor-table-wrap">
+      <table id="editor-table">
+        <thead>
+          <tr>
+            <th class="col-id">ID</th>
+            <th class="col-pos">Position</th>
+            <th class="col-person">Person</th>
+            <th class="col-parent">Parent</th>
+            <th class="col-mgr">Mgr</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="editor-tbody"></tbody>
+      </table>
+    </div>
+    <div id="editor-footer">
+      <button class="btn btn-sm btn-primary" id="btn-save-csv"><i class="bi bi-floppy me-1"></i><span data-i18n="editor.saveCsv">Save CSV</span></button>
+      <button class="btn btn-sm btn-outline-secondary" id="btn-save-overwrite" style="display:none"><i class="bi bi-floppy2 me-1"></i><span data-i18n="editor.overwriteOriginal">Overwrite original</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ── URL modal ── -->
+<div class="modal fade" id="urlModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" data-i18n="urlModal.title">Load CSV from URL</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="url" id="urlInput" class="form-control" placeholder="https://example.com/data.csv" data-i18n-placeholder="urlModal.placeholder" autocomplete="off">
+        <div id="url-error" class="text-danger mt-1" style="font-size:13px;display:none"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-url-load">Load</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Node edit/add modal ── -->
+<div class="modal fade" id="nodeModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nodeModalTitle">Edit Node</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-2">
+          <div class="col-6">
+            <label class="form-label"  data-i18n="nodeModal.positionLabel">Position / Role <span class="text-danger">*</span></label>
+            <input type="text" id="nf-position" class="form-control">
+          </div>
+          <div class="col-6">
+            <label class="form-label" data-i18n="nodeModal.personLabel">Person name(s)</label>
+            <input type="text" id="nf-person" class="form-control" placeholder="Use ; to separate multiple"  data-i18n="nodeModal.personPlaceholder">
+          </div>
+          <div class="col-12">
+            <label class="form-label" data-i18n="nodeModal.parentLabel">Parent node <span class="text-danger">*</span></label>
+            <select id="nf-parent" class="form-select"></select>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Color</label>
+            <div style="display:flex;gap:6px;align-items:center;">
+              <select id="nf-color" class="form-select">
+                <option value="orange">Orange</option>
+                <option value="cyan">Cyan</option>
+                <option value="green">Green</option>
+                <option value="blue">Blue</option>
+                <option value="steelblue">Steel Blue</option>
+                <option value="coral">Coral</option>
+                <option value="mediumpurple">Purple</option>
+                <option value="#e74c3c">Red</option>
+                <option value="#2ecc71">Emerald</option>
+                <option value="#9b59b6">Violet</option>
+                <option value="gray">Gray</option>
+                <option value="custom">Custom…</option>
+              </select>
+              <input type="color" id="nf-color-custom" value="#888888" style="width:40px;height:32px;padding:2px;border:1px solid #ccc;border-radius:4px;display:none;">
+            </div>
+          </div>
+          <div class="col-3 d-flex align-items-end">
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="nf-mgr">
+              <label class="form-check-label" for="nf-mgr" data-i18n="nodeModal.managerLabel">Manager</label>
+            </div>
+          </div>
+          <div class="col-3">
+            <label class="form-label" data-i18n="nodeModal.idLabel">ID <span class="text-muted" style="font-size:11px" data-i18n="nodeModal.idAuto">(auto)</span></label>
+            <input type="number" id="nf-id" class="form-control" readonly style="background:#f5f5f5">
+          </div>
+          <div class="col-12">
+            <div id="node-modal-error" class="text-danger" style="font-size:13px;display:none"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  data-i18n="nodeModal.cancel">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-node-save"  data-i18n="nodeModal.save">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Delete confirm modal ── -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete node</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p id="delete-msg" style="font-size:13px;margin:0"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger btn-sm" id="btn-delete-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Settings modal ── -->
+<div class="modal fade" id="settingsModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-sliders me-2"></i><span data-i18n="settingsModal.title">Visual Settings</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="max-height:70vh;overflow-y:auto;">
+
+        <!-- Live preview -->
+        <div class="cfg-section" data-i18n="settingsModal.preview">Preview</div>
+        <div class="cfg-preview-box" id="cfg-preview"></div>
+
+        <!-- Node dimensions -->
+        <div class="cfg-section"data-i18n="settingsModal.dimensionsSection">Node dimensions</div>
+        <div class="cfg-row">
+          <label>Node width</label>
+          <input type="range" id="cfg-nodeWidth" min="120" max="400" step="5">
+          <span class="cfg-val" id="cfg-nodeWidth-val"></span> px
+        </div>
+        <div class="cfg-row">
+          <label>Node height</label>
+          <input type="range" id="cfg-nodeHeight" min="50" max="160" step="2">
+          <span class="cfg-val" id="cfg-nodeHeight-val"></span> px
+        </div>
+        <div class="cfg-row">
+          <label>Root/header node height</label>
+          <input type="range" id="cfg-rootNodeHeight" min="40" max="120" step="2">
+          <span class="cfg-val" id="cfg-rootNodeHeight-val"></span> px
+        </div>
+        <div class="cfg-row">
+          <label>Color bar height</label>
+          <input type="range" id="cfg-colorBarHeight" min="4" max="24" step="1">
+          <span class="cfg-val" id="cfg-colorBarHeight-val"></span> px
+        </div>
+
+        <!-- Spacing -->
+        <div class="cfg-section" data-i18n="settingsModal.spacingSection">Spacing</div>
+        <div class="cfg-row">
+          <label>Children margin</label>
+          <input type="range" id="cfg-childrenMargin" min="10" max="100" step="2">
+          <span class="cfg-val" id="cfg-childrenMargin-val"></span> px
+        </div>
+        <div class="cfg-row">
+          <label>Compact margin between</label>
+          <input type="range" id="cfg-compactMarginBetween" min="4" max="60" step="1">
+          <span class="cfg-val" id="cfg-compactMarginBetween-val"></span> px
+        </div>
+        <div class="cfg-row">
+          <label>Compact margin pair</label>
+          <input type="range" id="cfg-compactMarginPair" min="20" max="160" step="4">
+          <span class="cfg-val" id="cfg-compactMarginPair-val"></span> px
+        </div>
+
+        <!-- Colors -->
+        <div class="cfg-section" data-i18n="settingsModal.colorsSection">Colors</div>
+        <div class="cfg-row">
+          <label>Card background</label>
+          <input type="color" id="cfg-cardBackground">
+        </div>
+        <div class="cfg-row">
+          <label>Border color</label>
+          <input type="color" id="cfg-borderColor">
+        </div>
+        <div class="cfg-row">
+          <label>Name tag background</label>
+          <input type="color" id="cfg-nameTagBackground">
+        </div>
+        <div class="cfg-row">
+          <label>Name tag border</label>
+          <input type="color" id="cfg-nameTagBorder">
+        </div>
+
+        <!-- Typography -->
+        <div class="cfg-section" data-i18n="settingsModal.typographySection">Typography</div>
+        <div class="cfg-row">
+          <label>Border radius</label>
+          <input type="range" id="cfg-borderRadius" min="0" max="20" step="1">
+          <span class="cfg-val" id="cfg-borderRadius-val"></span> px
+        </div>
+        <div class="cfg-row">
+          <label>Position font size</label>
+          <input type="range" id="cfg-positionFontSize" min="8" max="22" step="1">
+          <span class="cfg-val" id="cfg-positionFontSize-val"></span> px
+        </div>
+        <div class="cfg-row">
+          <label data-i18n="settingsModal.positionFontWeight">>Position font weight</label>
+          <select id="cfg-positionFontWeight" style="width:100px;font-size:13px;padding:2px 6px;border:1px solid #ccc;border-radius:4px;">
+            <option value="400">Normal</option>
+            <option value="600">Semi-bold</option>
+            <option value="700">Bold</option>
+          </select>
+        </div>
+        <div class="cfg-row">
+          <label>Name font size</label>
+          <input type="range" id="cfg-nameFontSize" min="8" max="18" step="1">
+          <span class="cfg-val" id="cfg-nameFontSize-val"></span> px
+        </div>
+
+        <!-- Display options -->
+        <div class="cfg-section" data-i18n="settingsModal.displaySection">Display</div>
+        <div class="cfg-row">
+          <label data-i18n="settingsModal.showPersonNames">Show person names</label>
+          <div class="form-check form-switch" style="margin:0">
+            <input class="form-check-input" type="checkbox" id="cfg-showPersonNames" style="width:2.5em;height:1.2em;">
+          </div>
+        </div>
+
+        <!-- Language -->
+        <div class="cfg-section" data-i18n="settingsModal.languageSection">Language</div>
+        <div class="cfg-row">
+          <label data-i18n="settingsModal.languageLabel">Interface language</label>
+          <select id="cfg-language" style="width:140px;font-size:13px;padding:2px 6px;border:1px solid #ccc;border-radius:4px;">
+            <option value="en">English</option>
+            <option value="tr">Türkçe</option>
+          </select>
+        </div>
+
+      </div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-cfg-reset">
+          <i class="bi bi-arrow-counterclockwise me-1"></i>Reset to defaults
+        </button>
+        <div style="display:flex;gap:8px;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-cfg-cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="btn-cfg-save">
+            <i class="bi bi-check2 me-1"></i>Apply & Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── Validation report modal ── -->
+<div class="modal fade" id="validationModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-clipboard-check me-2"></i><span data-i18n="validationModal.title">CSV Validation Report</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="max-height:60vh;overflow-y:auto;" id="validation-body"></div>
+      <div class="modal-footer" style="justify-content:space-between;">
+        <span id="validation-summary" style="font-size:13px;color:#666;"></span>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-i18n="validationModal.continueAnyway">Continue anyway</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Tiled export modal ── -->
+<div class="modal fade" id="tiledModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-grid-3x3-gap me-2"></i><span data-i18n="tiledModal.title">Tiled Export</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row g-3">
+          <div class="col-6">
+            <label class="form-label" data-i18n="tiledModal.paperSize">Paper size</label>
+            <select id="tile-paper" class="form-select">
+              <option value="a4">A4  (210 × 297 mm)</option>
+              <option value="a3">A3  (297 × 420 mm)</option>
+              <option value="letter">Letter (216 × 279 mm)</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" data-i18n="tiledModal.orientation">Orientation</label>
+            <select id="tile-orient" class="form-select">
+              <option value="landscape" data-i18n="tiledModal.landscape">Landscape</option>
+              <option value="portrait" data-i18n="tiledModal.portrait">Portrait</option>
+            </select>
+          </div>
+
+          <div class="col-6">
+            <label class="form-label" data-i18n="tiledModal.scale">Scale <span id="tile-scale-val" class="text-muted">100</span>%</label>
+            <input type="range" id="tile-scale" class="form-range" min="25" max="200" step="5" value="100">
+            <div class="form-text" data-i18n="tiledModal.scaleHelp">Lower = smaller nodes, more fits per page</div>
+          </div>
+          <div class="col-6">
+            <label class="form-label" data-i18n="tiledModal.overlap">Overlap <span id="tile-overlap-val" class="text-muted">10</span> mm</label>
+            <input type="range" id="tile-overlap" class="form-range" min="0" max="30" step="2" value="10">
+            <div class="form-text" data-i18n="tiledModal.overlapHelp">Shared margin for assembly alignment</div>
+          </div>
+
+          <div class="col-6">
+            <label class="form-label" data-i18n="tiledModal.outputFormat">Output format</label>
+            <select id="tile-format" class="form-select">
+              <option value="pdf" data-i18n="tiledModal.formatPDF">PDF (all pages in one file)</option>
+              <option value="png" data-i18n="tiledModal.formatPNG">PNG tiles (one file each)</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label" data-i18n="tiledModal.pageLabels">Page labels</label>
+            <select id="tile-labels" class="form-select">
+              <option value="1" data-i18n="tiledModal.labelsShow">Show (row/col + page number)</option>
+              <option value="0" data-i18n="tiledModal.labelsHide">Hide</option>
+            </select>
+          </div>
+
+          <!-- Tile preview grid -->
+          <div class="col-12">
+            <label class="form-label"  data-i18n="tiledModal.estimatedLayout">Estimated layout</label>
+            <div id="tile-preview" style="background:#f5f5f5;border:1px solid #ddd;border-radius:6px;
+              padding:10px;min-height:60px;display:flex;align-items:center;justify-content:center;
+              font-size:13px;color:#666;"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="tiledModal.cancel">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-tiled-go">
+          <i class="bi bi-download me-1" data-i18n="tiledModal.generate"></i> </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Manage Orgs modal ── -->
+<div class="modal fade" id="orgModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" data-i18n="orgModal.title"><i class="bi bi-diagram-2 me-2"></i>Manage Orgs</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Existing orgs table -->
+        <div style="font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#999;margin-bottom:8px;"  data-i18n="orgModal.currentOrgs">
+          Current orgs
+        </div>
+        <table id="org-mgmt-table" style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px;">
+          <thead>
+            <tr style="background:#e8e8e8;">
+              <th style="padding:6px 10px;text-align:left;border-bottom:2px solid #ccc;" data-i18n="orgModal.colName">Org name</th>
+              <th style="padding:6px 10px;text-align:left;border-bottom:2px solid #ccc;" data-i18n="orgModal.colRootId">Root ID</th>
+              <th style="padding:6px 10px;text-align:left;border-bottom:2px solid #ccc;" data-i18n="orgModal.colNodes">Nodes</th>
+              <th style="padding:6px 10px;text-align:left;border-bottom:2px solid #ccc;" data-i18n="orgModal.colColor">Color</th>
+              <th style="padding:6px 10px;text-align:center;border-bottom:2px solid #ccc;width:100px;" data-i18n="orgModal.colActions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="org-mgmt-tbody"></tbody>
+        </table>
+
+        <hr style="margin:0 0 16px;">
+
+        <!-- Add / Edit form -->
+        <div style="font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:#999;margin-bottom:10px;"
+             id="org-form-title" data-i18n="orgModal.addTitle">Add new org </div>
+        <div class="row g-2">
+          <div class="col-4">
+            <label class="form-label" data-i18n="orgModal.orgNameLabel">Org name <span class="text-danger">*</span></label>
+            <input type="text" id="org-f-name" class="form-control" placeholder="e.g. Finance">
+          </div>
+          <div class="col-4">
+            <label class="form-label" data-i18n="orgModal.rootLabelLabel">Root label <span class="text-danger">*</span></label>
+            <input type="text" id="org-f-label" class="form-control" placeholder="e.g. Finance Dept.">
+          </div>
+          <div class="col-2">
+            <label class="form-label" data-i18n="orgModal.colorLabel">Color</label>
+            <input type="color" id="org-f-color" value="#4a90d9"
+              style="width:100%;height:36px;padding:2px;border:1px solid #ccc;border-radius:4px;cursor:pointer;">
+          </div>
+          <div class="col-2 d-flex align-items-end">
+            <button class="btn btn-success w-100" id="btn-org-form-save">
+              <i class="bi bi-plus-lg me-1" data-i18n="orgModal.addButton"></i>Add
+            </button>
+          </div>
+          <div class="col-12">
+            <div id="org-form-error" class="text-danger" style="font-size:12px;display:none;"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="orgModal.close">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Rename org modal ── -->
+<div class="modal fade" id="orgRenameModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" data-i18n="orgModal.renameTitle">Rename org</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label" id="rename-org-current"></label>
+        <input type="text" id="rename-org-input" class="form-control">
+        <div id="rename-org-error" class="text-danger mt-1" style="font-size:12px;display:none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" data-i18n="dragModal.cancel">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-rename-org-confirm" data-i18n="orgModal.renameConfirm">Rename</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Delete org confirm modal ── -->
+<div class="modal fade" id="orgDeleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" data-i18n="orgModal.deleteTitle">Delete org</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p id="org-delete-msg" style="font-size:13px;margin:0;"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" data-i18n="dragModal.cancel">Cancel</button>
+        <button type="button" class="btn btn-danger btn-sm" id="btn-org-delete-confirm" data-i18n="orgModal.deleteConfirm">Delete all</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Drag re-parent confirm modal ── -->
+<div class="modal fade" id="dragConfirmModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="bi bi-arrows-move me-2"></i><span data-i18n="dragModal.title">Confirm re-parent</span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p id="drag-confirm-msg" style="font-size:13px;margin:0;"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" id="btn-drag-cancel" data-i18n="dragModal.cancel">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btn-drag-confirm" data-i18n="dragModal.confirm">Move node</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast container ── -->
+<div id="toast-wrap"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-org-chart@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-flextree@2.1.2/build/d3-flextree.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="renderer.js"></script>
+</body>
+</html>

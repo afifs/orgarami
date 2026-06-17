@@ -1,0 +1,327 @@
+{
+  "app": {
+    "title": "Orgarami"
+  },
+  "toolbar": {
+    "openFile": "CSV dosyası aç… (Ctrl+O)",
+    "loadUrl": "URL'den yükle… (Ctrl+U)",
+    "reload": "Mevcut kaynağı yenile",
+    "undo": "Geri al (Ctrl+Z)",
+    "redo": "Yeniden yap (Ctrl+Y)",
+    "fitScreen": "Ekrana sığdır",
+    "fullscreen": "Tam ekran",
+    "compactLayout": "Kompakt düzeni aç/kapat",
+    "expandAll": "Tüm pozisyonları genişlet",
+    "collapseManagers": "Yalnızca yöneticileri göster",
+    "exportSvg": "SVG olarak dışa aktar",
+    "print": "Şemayı yazdır (Ctrl+P)",
+    "savePng": "Şemayı PNG olarak kaydet",
+    "tiledExport": "Parçalı dışa aktarma / çok sayfalı PDF",
+    "manageOrgs": "Organizasyonları yönet (ekle / yeniden adlandır / sil)",
+    "editor": "Veri düzenleyiciyi aç/kapat",
+    "settings": "Görsel ayarlar (Ctrl+,)",
+    "moveMode": "Taşıma modunu aç/kapat (seç → üst öğeye tıkla)",
+    "searchPlaceholder": "Pozisyon/kişi ara…",
+    "noFileLoaded": "Dosya yüklenmedi",
+    "geditMode": "Grafik düzenleme modunu aç/kapat"
+  },
+  "menu": {
+    "file": "Dosya",
+    "openFile": "CSV dosyası aç…",
+    "loadUrl": "URL'den yükle…",
+    "print": "Yazdır…",
+    "settings": "Ayarlar…",
+    "quit": "Çıkış",
+    "view": "Görünüm",
+    "reload": "Yenile",
+    "devTools": "Geliştirici Araçlarını Aç/Kapat",
+    "fullscreen": "Tam Ekranı Aç/Kapat",
+    "help": "Yardım",
+    "about": "Orgarami Hakkında"
+  },
+  "editor": {
+    "title": "Veri Düzenleyici",
+    "addNode": "Ekle",
+    "unsavedChanges": "● Kaydedilmemiş değişiklikler",
+    "saveCsv": "CSV olarak kaydet",
+    "overwriteOriginal": "Orijinalin üzerine yaz",
+    "colId": "ID",
+    "colPosition": "Pozisyon",
+    "colPerson": "Kişi",
+    "colParent": "Üst",
+    "colManager": "Yön.",
+    "colActions": "İşlemler",
+    "editNode": "Düzenle",
+    "deleteNode": "Sil"
+  },
+  "nodeModal": {
+    "editTitle": "Pozisyonu Düzenle",
+    "addTitle": "Pozisyon Ekle",
+    "positionLabel": "Pozisyon / Rol",
+    "personLabel": "Kişi adı/adları",
+    "personPlaceholder": "Birden fazla için ; kullanın",
+    "parentLabel": "Üst pozisyon",
+    "colorLabel": "Renk",
+    "managerLabel": "Yönetici",
+    "idLabel": "ID",
+    "idAuto": "(otomatik)",
+    "noManagersAvailable": "— kullanılabilir yönetici yok —",
+    "errorPositionRequired": "Pozisyon / Rol zorunludur.",
+    "errorParentRequired": "Lütfen bir üst pozisyon seçin.",
+    "errorCannotDetermineId": "Bu org için sonraki ID belirlenemiyor",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "colors": {
+      "orange": "Turuncu",
+      "cyan": "Camgöbeği",
+      "green": "Yeşil",
+      "blue": "Mavi",
+      "steelblue": "Çelik Mavisi",
+      "coral": "Mercan",
+      "mediumpurple": "Mor",
+      "red": "Kırmızı",
+      "emerald": "Zümrüt",
+      "violet": "Eflatun",
+      "gray": "Gri",
+      "custom": "Özel…"
+    }
+  },
+  "deleteModal": {
+    "title": "pozisyonu sil",
+    "childrenWarning": "{count} alt pozisyon {parent} öğesine yeniden atanacak.",
+    "cancel": "İptal",
+    "delete": "Sil"
+  },
+  "orgModal": {
+    "title": "Organizasyonları Yönet",
+    "currentOrgs": "Mevcut organizasyonlar",
+    "noOrgs": "Yüklenmiş organizasyon yok",
+    "colName": "Org adı",
+    "colRootId": "Kök ID",
+    "colNodes": "Pozisyonlar",
+    "colColor": "Renk",
+    "colActions": "İşlemler",
+    "nodeCount": "{count} pozisyon",
+    "nodeCountPlural": "{count} pozisyon",
+    "addTitle": "Yeni organizasyon ekle",
+    "orgNameLabel": "Org adı",
+    "rootLabelLabel": "Kök etiketi",
+    "colorLabel": "Renk",
+    "addButton": "Ekle",
+    "errorNameRequired": "Org adı zorunludur.",
+    "errorLabelRequired": "Kök etiketi zorunludur.",
+    "errorDuplicateName": "\"{name}\" adında bir organizasyon zaten mevcut.",
+    "close": "Kapat",
+    "renameTitle": "Organizasyonu yeniden adlandır",
+    "renamePrompt": "\"{name}\" için yeni ad",
+    "errorNameEmpty": "Ad boş olamaz.",
+    "errorAlreadyExists": "\"{name}\" zaten mevcut.",
+    "renameConfirm": "Yeniden adlandır",
+    "deleteTitle": "Organizasyonu sil",
+    "deleteMessage": "\"{name}\" organizasyonunu ve tüm {count} pozisyonunü sil?",
+    "deleteWarning": "Bu işlem geri alınamaz — emin değilseniz önce CSV'nizi kaydedin.",
+    "deleteConfirm": "Tümünü sil",
+    "toastCreated": "\"{name}\" organizasyonu oluşturuldu (kök ID {id})",
+    "toastRenamed": "\"{old}\" → \"{new}\" olarak yeniden adlandırıldı",
+    "toastDeleted": "\"{name}\" organizasyonu silindi"
+  },
+  "settingsModal": {
+    "title": "Görsel Ayarlar",
+    "preview": "Önizleme",
+    "samplePosition": "Örnek Pozisyon",
+    "samplePerson": "Örnek Kişi",
+    "dimensionsSection": "Kutu boyutları",
+    "nodeWidth": "Kutu genişliği",
+    "nodeHeight": "Kutu yüksekliği",
+    "rootNodeHeight": "Kök/başlık kutu yüksekliği",
+    "colorBarHeight": "Renk çubuğu yüksekliği",
+    "spacingSection": "Aralıklar",
+    "childrenMargin": "Alt öğe kenar boşluğu",
+    "compactMarginBetween": "Kompakt arası boşluk",
+    "compactMarginPair": "Kompakt çift boşluğu",
+    "colorsSection": "Renkler",
+    "cardBackground": "Kart arka planı",
+    "borderColor": "Kenarlık rengi",
+    "nameTagBackground": "Ad etiketi arka planı",
+    "nameTagBorder": "Ad etiketi kenarlığı",
+    "typographySection": "Tipografi",
+    "borderRadius": "Köşe yuvarlaklığı",
+    "positionFontSize": "Pozisyon yazı boyutu",
+    "positionFontWeight": "Pozisyon yazı kalınlığı",
+    "fontWeightNormal": "Normal",
+    "fontWeightSemibold": "Yarı kalın",
+    "fontWeightBold": "Kalın",
+    "nameFontSize": "İsim yazı boyutu",
+    "displaySection": "Görünüm",
+    "showPersonNames": "Kişi adlarını göster",
+    "languageSection": "Dil",
+    "languageLabel": "Arayüz dili",
+    "resetDefaults": "Varsayılanlara sıfırla",
+    "cancel": "İptal",
+    "applyAndSave": "Uygula ve Kaydet"
+  },
+  "urlModal": {
+    "title": "CSV'yi URL'den Yükle",
+    "placeholder": "https://ornek.com/veri.csv",
+    "errorEmpty": "Lütfen bir URL girin.",
+    "errorInvalid": "http:// veya https:// ile başlamalıdır",
+    "cancel": "İptal",
+    "load": "Yükle"
+  },
+  "validationModal": {
+    "title": "CSV Doğrulama Raporu",
+    "continueAnyway": "Yine de devam et",
+    "noIssues": "Sorun bulunamadı.",
+    "categories": {
+      "duplicateId": "Yinelenen ID",
+      "missingField": "Eksik alan",
+      "orphanNode": "Sahipsiz pozisyon",
+      "idOutOfRange": "ID aralık dışı",
+      "multipleRoots": "Birden fazla kök",
+      "noRootNode": "Kök pozisyon yok"
+    },
+    "messages": {
+      "duplicateId": "{id} ID'si birden fazla görünüyor",
+      "missingPositionName": "{id} ID'li satırda positionName yok",
+      "missingOrg": "{id} ID'li satırda org yok",
+      "orphanNode": "\"{name}\" (ID {id}) eksik üst ID {parentId}'ye başvuruyor",
+      "idOutOfRange": "\"{name}\" (ID {id}) kendi org bloğu {min}–{max} dışında",
+      "multipleRoots": "\"{org}\" organizasyonunun {count} kök pozisyonu var (id % 1000 === 0)",
+      "noRootNode": "\"{org}\" organizasyonunun kök pozisyonu yok (id % 1000 === 0)"
+    }
+  },
+  "tiledModal": {
+    "title": "Parçalı Dışa Aktarma",
+    "paperSize": "Kağıt boyutu",
+    "orientation": "Yönlendirme",
+    "landscape": "Yatay",
+    "portrait": "Dikey",
+    "scale": "Ölçek",
+    "overlap": "Örtüşme",
+    "overlapUnit": "mm",
+    "overlapHelp": "Birleştirme hizalaması için ortak kenar boşluğu",
+    "scaleHelp": "Düşük = daha küçük pozisyonlar, sayfaya daha fazla sığar",
+    "outputFormat": "Çıktı formatı",
+    "formatPdf": "PDF (tek dosyada tüm sayfalar)",
+    "formatPng": "PNG parçaları (her biri ayrı dosya)",
+    "pageLabels": "Sayfa etiketleri",
+    "labelsShow": "Göster (satır/sütun + sayfa numarası)",
+    "labelsHide": "Gizle",
+    "estimatedLayout": "Tahmini düzen",
+    "noChartLoaded": "Yüklenmiş şema yok",
+    "renderFirst": "Önce bir şema görüntüleyin",
+    "pages": " sayfa",
+    "pagesPlural": " sayfa",
+	"page": "Sayfa",
+	"chart": "Şema",
+	"overlap":"Binme",
+    "tooManyTiles": "⚠ Çok fazla parça — ölçeği küçültün veya kağıt boyutunu büyütün",
+    "cancel": "İptal",
+    "generate": " Oluştur",
+    "papers": {
+      "a4": "A4  (210 × 297 mm)",
+      "a3": "A3  (297 × 420 mm)",
+      "letter": "Letter (216 × 279 mm)"
+    }
+  },
+  "dragModal": {
+    "title": "Yeniden ebeveyn atamayı onayla",
+    "cancel": "İptal",
+    "confirm": "pozisyonu taşı"
+  },
+  "toast": {
+    "fetching": "Getiriliyor…",
+    "capturing": "Şema yakalanıyor…",
+    "fileReloaded": "Dosya yeniden yüklendi",
+    "saved": "Kaydedildi: {filename}",
+    "overwritten": "Üzerine yazıldı: {filename}",
+    "overwriteFailed": "Üzerine yazılamadı: {error} — Farklı Kaydet açılıyor…",
+    "saveError": "Kaydetme hatası: {error}",
+    "nodeDeleted": "Pozisyon silindi",
+    "nodeMoved": "Pozisyon taşındı",
+    "undone": "Geri alındı",
+    "redone": "Yeniden yapıldı",
+    "configSaved": "Görsel ayarlar kaydedildi",
+    "configReset": "Varsayılanlara sıfırlandı",
+    "printOpened": "Yazdırma iletişim kutusu açıldı",
+    "pngSaved": "PNG kaydedildi",
+    "pdfSaved": "PDF kaydedildi — {count} sayfa",
+    "tilesSaved": "{count} PNG parçası kaydedildi",
+    "tilesSaved": "{count} PNG parçası kaydedildi",
+    "buildingTiles": "{count} parça oluşturuluyor…",
+    "moveModeOn": "Taşıma modu AÇIK — seçmek için bir pozisyona, ardından yeni üst öğeye tıklayın",
+    "moveModeOff": "Taşıma modu KAPALI",
+    "moveSelected": "\"{name}\" seçildi. şimdi yeni üst öğeye tıklayın",
+    "moveCancelled": "Seçim iptal edildi",
+    "cannotMoveRoot": "Kök pozisyon taşınamaz",
+    "cannotMoveToDescendant": "Pozisyon kendi alt öğesine taşınamaz",
+    "noChartToPrint": "Yazdırılacak şema yok",
+    "captureFailed": "Yakalama başarısız: {error}",
+    "printError": "Yazdırma hatası: {error}",
+    "noChartLoaded": "Yüklenmiş şema yok",
+    "selectOrgFirst": "Önce bir org seçin",
+    "orgValidationWarning": "{count} pozisyonun eksik üst öğesi var",
+    "loaded": "{rows} satır yüklendi — {orgs} org",
+    "errorPrefix": "Hata: {error}"
+  },
+  "orgSelect": {
+    "placeholder": "— org seçin —"
+  },
+  "about": {
+    "title": "Orgarami Hakkında",
+    "version": "Sürüm 1.0.0",
+    "description": "CSV verilerinden organizasyon şemalarını görüntülemek ve düzenlemek için hafif bir masaüstü uygulaması. Dosyaları yerel olarak veya uzak URL'lerden yükleyin, pozisyonları yerinde düzenleyin ve SVG olarak dışa aktarın veya doğrudan yazdırın.",
+    "featuresSection": "Özellikler",
+    "techSection": "Kullanılan teknolojiler",
+    "features": {
+      "localRemote": {
+        "title": "Yerel ve Uzak CSV",
+        "desc": "Dosya açın veya herhangi bir HTTP/HTTPS URL'den getirin"
+      },
+      "editor": {
+        "title": "Uygulama içi düzenleyici",
+        "desc": "Canlı şema güncellemesiyle pozisyon ekleyin, düzenleyin ve silin"
+      },
+      "reparent": {
+        "title": "Akıllı yeniden ebeveyn",
+        "desc": "Silinen pozisyonun çocukları otomatik olarak üst öğeye bağlanır"
+      },
+      "saveCsv": {
+        "title": "CSV olarak kaydet",
+        "desc": "UTF-8 BOM çıktısı — Excel'de doğru açılır"
+      },
+      "print": {
+        "title": "Yazdır ve Parçalı dışa aktarma",
+        "desc": "Sistem yazdırma iletişim kutusu ve çok sayfalı PDF parçalama"
+      },
+      "export": {
+        "title": "SVG / PNG dışa aktarma",
+        "desc": "Belgeler için vektör ve raster dışa aktarma"
+      },
+      "multiOrg": {
+        "title": "Çoklu org desteği",
+        "desc": "Tek bir CSV dosyasında birden fazla organizasyon"
+      },
+      "session": {
+        "title": "Oturum geri yükleme",
+        "desc": "Son açılan dosyayı oturumlar arasında hatırlar"
+      },
+      "undoRedo": {
+        "title": "Geri Al / Yeniden Yap",
+        "desc": "Ctrl+Z / Ctrl+Y ile tam düzenleme geçmişi"
+      },
+      "i18n": {
+        "title": "Çok dilli",
+        "desc": "İngilizce ve Türkçe arayüz"
+      }
+    },
+    "copyright": "© 2026 Afif Say"
+  },
+  "gedit": {
+    "modeOn": "Grafik düzenleme AÇIK — alanları düzenlemek için tıklayın, + alt pozisyon ekler, × siler",
+    "modeOff": "Grafik düzenleme KAPALI",
+	"addChildNode": "Alt pozisyon ekle",
+	"deleteNode": "Pozisyonu sil"
+	
+  }
+}
