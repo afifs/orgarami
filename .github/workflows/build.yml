@@ -1,12 +1,9 @@
-
 name: Build & Release
 
 on:
   push:
     tags:
       - 'v*'
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-windows:
@@ -16,15 +13,15 @@ jobs:
 
       - uses: actions/setup-node@v5
         with:
-          node-version: 22
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
 
       - name: Build Windows installer
-        run: npm run build:win
+        run: npm run build
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v5
@@ -38,8 +35,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v5
-
       - name: Download artifacts
         uses: actions/download-artifact@v5
         with:
@@ -50,4 +45,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*.exe
-          body_path: RELEASE_NOTES.md
+          generate_release_notes: true
