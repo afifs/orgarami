@@ -14,7 +14,9 @@ Interactive organization chart manager/viewer:
 * Automatic session restore
 * Multi-lingual (en, tr available others can be added)
 * Electron app
-
+![Screenshot 2026-06-17 173051.png](assets/Screenshot%202026-06-17%20173051.png)
+![Screenshot 2026-06-17 173152.png](assets/Screenshot%202026-06-17%20173152.png)
+![Screenshot 2026-06-17 173254.png](assets/Screenshot%202026-06-17%20173254.png)
 ---
 
 ## Quick start
@@ -122,6 +124,7 @@ Outputs to `dist/`:
 ```
 orgarami/
 ├── src/
+│   ├── images/         # Logo and icons
 │   ├── main.js         # Main process (Node): window, IPC, file I/O
 │   ├── preload.js      # Context bridge (safe IPC exposure)
 │   ├── index.html      # UI shell
