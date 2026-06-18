@@ -154,4 +154,4 @@ MIT © 2026 Afif Say — www.afifsay.org
 Information about the author along with his essays, information on his books are available at [www.afifsay.org](https://www.afifsay.org).
 Open to managing and consulting projects related to knowledge and authorship, or senior management consulting.
 
-![logoen.png](src/logoen.png)
+![logoen.png](src/images/logoen.png)
