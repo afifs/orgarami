@@ -66,7 +66,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1280, height: 820, minWidth: 800, minHeight: 600,
     title: 'Orgarami',
-    icon: path.join(assetsPath, process.platform === 'win32' ? 'icon.ico' : 'icon.png'),
+    icon: path.join(assetsPath, process.platform === 'win32' ? 'orglogo.ico' : 'orglogo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
