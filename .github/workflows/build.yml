@@ -21,6 +21,7 @@ jobs:
       - name: Build Windows installer
         run: npm run build
         env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
       - name: Upload artifacts
